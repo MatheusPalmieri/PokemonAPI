@@ -1,33 +1,31 @@
 const getPokemonUrl = id => `https://pokeapi.co/api/v2/pokemon/${id}`
 
-const fetchPokemon = () => {
-    var pokemonPromises = []
+const generatePokemonPromises = () => Array(150).fill().map((_,index) => 
+    fetch(getPokemonUrl(index + 1)).then(response => response.json())
+)
 
-    for(var i = 1; i <= 150; i++) {
-        pokemonPromises.push(fetch(getPokemonUrl(i)).then(response => response.json()))
-    }
+const generateHTML = pokemons => pokemons.reduce((accumulator, {name, id, types}) => {
+    var types = types.map(typeInfo => typeInfo.type.name)
 
-    Promise.all(pokemonPromises)
-        .then(pokemons => {
-            var lisPokemons = pokemons.reduce((accumulator, pokemon) => {
-                var types = pokemon.types.map(typeInfo => typeInfo.type.name)
+    accumulator += `
+            <li class="card ${types[0]}">
+                <img class="card-image" alt="${name}" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png" />
 
-                accumulator += `
-                        <li class="card ${types[0]}">
-                            <img class="card-image" alt="${pokemon.name}" src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${pokemon.id}.png" />
+                <h2 class="card-title">${id}. ${name}</h2>
+                <p class="card-subtitle">${types.join(' | ')}</p>
+            </li>
+        `
+    return accumulator
+}, '')
 
-                            <h2 class="card-title">${pokemon.id}. ${pokemon.name}</h2>
-                            <p class="card-subtitle">${types.join(' | ')}</p>
-                        </li>
-                    `
-                return accumulator
-            }, '')
-
-            var ul = document.querySelector('[data-js="pokedex"]')
-
-            ul.innerHTML = lisPokemons
-        })
+const insertPokemonsIntoPage = pokemons => {
+    var ul = document.querySelector('[data-js="pokedex"]')
+    ul.innerHTML = pokemons
 }
 
-// Application Start
-fetchPokemon()
+    
+var pokemonPromises = generatePokemonPromises()
+
+Promise.all(pokemonPromises)
+    .then(generateHTML)
+    .then(insertPokemonsIntoPage)
