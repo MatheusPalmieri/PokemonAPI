@@ -20,7 +20,7 @@
 <h2 align="center">Site</h2>
 
 <p align="center">
- <a href="https://matheuspalmieri.github.io/PokeAPI/">Site Do Projeto</a>
+ <a href="https://matheuspalmieri.github.io/PokemonAPI/">Site Do Projeto</a>
 </p>
 
 <div width="1366">
@@ -31,7 +31,7 @@
 
 ### Rodando A Aplicação
 
-<a href="https://matheuspalmieri.github.io/PokeAPI/" target="_blank">Site Do Projeto</a>
+<a href="https://matheuspalmieri.github.io/PokemonAPI/" target="_blank">Site Do Projeto</a>
 
 ---
 
